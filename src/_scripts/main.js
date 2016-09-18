@@ -27,6 +27,14 @@ var Gallery = function(domObject) {
     // load first (current) image
     self._loadImage(self.currentImageIndex);
     self._activateImage(self.currentImageIndex);
+
+    // check images number and toggle nav visibility
+    if (self.imageCount > 1) {
+        // if one image -- hide navigation
+        self.$arrowPrev.style.visibility = "visible";
+        self.$arrowNext.style.visibility = "visible";
+        self.$counter.style.visibility = "visible";        
+    }
 };
 
 Gallery.prototype._loadImage = function (index) {
