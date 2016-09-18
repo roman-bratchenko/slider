@@ -28,13 +28,29 @@ var Gallery = function(domObject) {
     self._loadImage(self.currentImageIndex);
     self._activateImage(self.currentImageIndex);
 
-    // check images number and toggle nav visibility
     if (self.imageCount > 1) {
-        // if one image -- hide navigation
+        // if more then one image -- show navigation
         self.$arrowPrev.style.visibility = "visible";
         self.$arrowNext.style.visibility = "visible";
-        self.$counter.style.visibility = "visible";        
+        self.$counter.style.visibility = "visible";
+        
+        // preload previous and next image
+        self._loadImage(self._getPrevImageIndex());
+        self._loadImage(self._getNextImageIndex());
     }
+
+    // handle arrow events
+    self.$arrowPrev.addEventListener('click', function(){
+      self._loadImage(self._getPrevImageIndex());
+      self._activateImage(self._getPrevImageIndex());
+      self._refreshCounter();
+    });
+
+    self.$arrowNext.addEventListener('click', function(){
+      self._loadImage(self._getNextImageIndex());
+      self._activateImage(self._getNextImageIndex());
+      self._refreshCounter();
+    });
 };
 
 Gallery.prototype._loadImage = function (index) {
@@ -56,6 +72,23 @@ Gallery.prototype._activateImage = function(index) {
     this.currentImageIndex = index;
 };
 
+Gallery.prototype._getNextImageIndex = function(){
+    if (this.currentImageIndex === this.imageCount - 1) {
+        return 0;
+    }
+    return this.currentImageIndex + 1;
+};
+
+Gallery.prototype._getPrevImageIndex = function(){
+    if (this.currentImageIndex === 0) {
+        return this.imageCount - 1;
+    }
+    return this.currentImageIndex - 1;
+};
+
+Gallery.prototype._refreshCounter = function(){
+    this.$counterCurrent.innerHTML = this.currentImageIndex + 1;
+};
+
+
 var gallery = new Gallery(document.querySelector('.gallery'));
-
-
